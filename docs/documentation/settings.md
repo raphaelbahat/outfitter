@@ -48,6 +48,7 @@ remote_settings:
 cache_directory: ./cache # optional; relative to this settings file
 pi_binary: bundled # which pi binary to launch: bundled (default), path, or auto
 pi_binary_path: ./vendor/pi/pi # explicit pi binary for path mode; relative to this settings file
+pi_mcp_config_file: mcp-adapter.json # MCP config filename pi projections write; default mcp.json
 source_cache:
   policy: repair # repair (default), locked, or offline
 
@@ -92,6 +93,7 @@ it.
 - `cache_directory` — the repository cache root used consistently by sync, remote settings, remote
   source resolution, and default-catalog setup. It defaults to `~/.agents/cache`; repositories live
 - `pi_binary` / `pi_binary_path` — which pi binary pi-harness launches use; see [Pi binary selection](#pi-binary-selection) below.
+- `pi_mcp_config_file` — the filename pi projections materialize the composed MCP payload into (default `mcp.json`); see [Pi MCP config filename](#pi-mcp-config-filename) below.
 - `source_cache.policy` — verifies remote caches before `run`: `repair` reuses healthy caches and
   atomically repairs unhealthy ones, `locked` also requires full commit pins, and `offline` never
   accesses the network.
@@ -223,3 +225,16 @@ A `pi_binary_path` set without `pi_binary` implies `path` mode; setting it along
 The `OUTFITTER_PI_BIN` environment variable overrides both keys for one run: set it to the binary path to launch (an empty value is ignored). A configured binary that does not exist on disk — via settings or the environment variable — fails the run before launch with an actionable error instead of silently reverting to the bundled pi.
 
 Two boundaries do not change with the selection: a user-selected binary does not get `PI_SKIP_VERSION_CHECK=1` injected, so pi's own update notice stays visible for a binary you can actually update with `pi update`; and pi extension cache installs always use the bundled binary, so cache-time behavior stays pinned to the version Outfitter ships.
+
+## Pi MCP config filename
+
+Pi projections materialize the composed MCP payload into `mcp.json`, the protocol-standard name. If a pi extension reads a different filename (for example, pi-mcp-adapter reads `mcp-adapter.json` because it cannot share the file with pi's built-in MCP support), point the projection at that file:
+
+```yaml
+pi_mcp_config_file: mcp-adapter.json # MCP config filename pi projections write; default mcp.json
+```
+
+- The value must be a plain file basename ending in `.json` — never a path (no `/`, `\`, or `..`); anything else fails the settings load with a schema validation issue.
+- Unset (the default), projections keep writing `mcp.json`, so pi's built-in MCP support and `outfitter dump` payloads stay protocol-shaped.
+- Only pi projections honor the key: claude projections always materialize `mcp.json` (claude reads it through `--mcp-config`), and the `PI_MCP_CONFIG_MODE=exclusive` environment pi launches with is unchanged.
+- Like every scalar settings leaf, the highest-precedence layer that declares the key wins.

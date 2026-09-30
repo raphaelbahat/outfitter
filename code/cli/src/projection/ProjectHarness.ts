@@ -374,7 +374,7 @@ export const projectComposition = (composition: CompositionPlan, input: Projecti
   // Materialization runs for every harness so containment and definition diagnostics are reported
   // uniformly. Codex reads none of the generated files — it takes its MCP config in argv and has no
   // config-directory projection yet — but the root is temporary, so the unused writes do not persist.
-  const materialized = materializeComposition(composition, input.rootDirectory, input.harness);
+  const materialized = materializeComposition(composition, input.rootDirectory, input.harness, input.piMcpConfigFile);
 
   declareClaudePlugin(composition, input);
   const projectedModel = projectModel(composition, input);

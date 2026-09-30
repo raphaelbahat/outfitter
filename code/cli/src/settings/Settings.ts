@@ -120,6 +120,12 @@ export interface Settings {
   readonly piBinary?: PiBinaryMode;
   /** Explicit pi binary for `pi_binary: path`; relative paths resolve against the declaring settings file. */
   readonly piBinaryPath?: string;
+  /**
+   * Filename pi projections materialize the composed MCP payload into (pi-mcp-adapter compatibility);
+   * default `mcp.json`. pi-scoped: claude projections always materialize `mcp.json` and never consult
+   * it. A plain `.json` basename enforced by the settings schema — never a path.
+   */
+  readonly piMcpConfigFile?: string;
   readonly customSettings?: CustomSettings;
   readonly startup?: StartupSettings;
   readonly enterprise?: EnterpriseSettings;

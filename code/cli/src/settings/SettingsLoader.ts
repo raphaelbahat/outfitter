@@ -59,6 +59,7 @@ interface SettingsDocument {
   readonly cache_directory?: string;
   readonly pi_binary?: PiBinaryMode;
   readonly pi_binary_path?: string;
+  readonly pi_mcp_config_file?: string;
   readonly source_cache?: { readonly policy?: SourceCachePolicy };
   readonly state_persistence?: StatePersistence;
   readonly custom_settings?: CustomSettings;
@@ -329,6 +330,7 @@ const convertSettingsDocument = (
       ? undefined
       : resolveConfigDirectory(document.cache_directory, settingsDirectory, homeDirectory),
   piBinary: document.pi_binary,
+  piMcpConfigFile: document.pi_mcp_config_file,
   // The binary path resolves where it was declared, so each settings layer keeps its own location
   // no matter where the run launches from — the same rule as cache_directory and source paths.
   piBinaryPath:

@@ -495,6 +495,7 @@ export const executeAgentPipeline = async (input: AgentPipelineInput): Promise<A
       agentDefaultsOverlayDirectories,
       agentDefaultsExtensionConfigs: agentDefaultsExtensionConfigsFor(settings),
       harnessDefaults: harnessDefaultsFor(settings, harness),
+      piMcpConfigFile: settings.piMcpConfigFile,
     });
 
     // Exec replaces the session argv wholesale (see resolveEffectiveProjection).

@@ -20,6 +20,11 @@
       "minLength": 1,
       "description": "Explicit pi binary used when pi_binary is path; setting it without pi_binary implies path mode. Relative paths resolve against this settings file. Ignored (with a warning) in bundled and auto modes, and overridden by OUTFITTER_PI_BIN."
     },
+    "pi_mcp_config_file": {
+      "type": "string",
+      "pattern": "^(?!.*\\.\\.)[^/\\\\]+\\.json$",
+      "description": "Filename pi projections materialize the composed MCP payload into, for pi-mcp-adapter compatibility (default: mcp.json). Must be a plain file basename ending in .json; never a path. Claude projections always materialize mcp.json and ignore this key."
+    },
     "source_cache": {
       "type": "object",
       "properties": { "policy": { "enum": ["repair", "locked", "offline"] } },

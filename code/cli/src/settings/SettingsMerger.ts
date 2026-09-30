@@ -68,6 +68,7 @@ export const mergeSettingsStack = (settingsStack: readonly Settings[]): Settings
   let cacheDirectory: string | undefined;
   let piBinary: Settings['piBinary'];
   let piBinaryPath: Settings['piBinaryPath'];
+  let piMcpConfigFile: Settings['piMcpConfigFile'];
   let sourceCache: Settings['sourceCache'];
   let statePersistence: StatePersistence | undefined;
   let customSettings: CustomSettings | undefined;
@@ -90,6 +91,7 @@ export const mergeSettingsStack = (settingsStack: readonly Settings[]): Settings
     cacheDirectory = settings.cacheDirectory ?? cacheDirectory;
     piBinary = settings.piBinary ?? piBinary;
     piBinaryPath = settings.piBinaryPath ?? piBinaryPath;
+    piMcpConfigFile = settings.piMcpConfigFile ?? piMcpConfigFile;
     sourceCache = settings.sourceCache === undefined ? sourceCache : { ...sourceCache, ...settings.sourceCache };
     statePersistence =
       settings.statePersistence === undefined
@@ -117,6 +119,7 @@ export const mergeSettingsStack = (settingsStack: readonly Settings[]): Settings
     cacheDirectory,
     piBinary,
     piBinaryPath,
+    piMcpConfigFile,
     sourceCache: sourceCache ?? {},
     statePersistence: statePersistence ?? {},
     customSettings: customSettings ?? {},

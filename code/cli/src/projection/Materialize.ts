@@ -607,11 +607,21 @@ const materializeIdentity = (
   return { systemPromptPath, appendPromptPaths };
 };
 
+/**
+ * The harness-owned MCP filename: claude keeps the protocol-standard `mcp.json` (its
+ * `--mcp-config` flag reads that name); pi honors the `pi_mcp_config_file` settings leaf
+ * (pi-mcp-adapter compatibility) with the same default. The write gate and payload content
+ * are unchanged from the pre-setting behavior.
+ */
+const mcpConfigFileName = (harness: Harness, piMcpConfigFile: string | undefined): string =>
+  harness === 'pi' && piMcpConfigFile !== undefined ? piMcpConfigFile : 'mcp.json';
+
 /** Writes composed identity, skills, subagents, and selected MCP servers into the runtime root. */
 export const materializeComposition = (
   composition: CompositionPlan,
   rootDirectory: string,
   harness: Harness,
+  piMcpConfigFile?: string,
 ): MaterializedComposition => {
   mkdirSync(rootDirectory, { recursive: true });
   const { systemPromptPath, appendPromptPaths } = materializeIdentity(composition, rootDirectory);
@@ -638,7 +648,7 @@ export const materializeComposition = (
   );
 
   if (harness === 'claude' || (harness === 'pi' && composition.loadout.mcp.length > 0)) {
-    writeMcpConfig(join(rootDirectory, 'mcp.json'), composition.loadout.mcpServers);
+    writeMcpConfig(join(rootDirectory, mcpConfigFileName(harness, piMcpConfigFile)), composition.loadout.mcpServers);
   }
   if (harness === 'pi' && composition.models?.configured) {
     writeGeneratedFile(join(rootDirectory, 'models.json'), `${JSON.stringify(composition.models.document, null, 2)}\n`);

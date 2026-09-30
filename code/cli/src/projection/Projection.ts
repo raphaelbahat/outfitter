@@ -81,4 +81,11 @@ export interface ProjectionInput {
   readonly agentDefaultsExtensionConfigs?: Readonly<Record<string, unknown>>;
   /** Harness-native defaults from the merged Outfitter settings stack. */
   readonly harnessDefaults?: HarnessDefaultSettings;
+  /**
+   * Filename the pi harness materializes the composed MCP payload into, from the merged
+   * `pi_mcp_config_file` settings leaf (pi-mcp-adapter compatibility). Defaults to the
+   * protocol-standard `mcp.json`. pi only; every other harness ignores the input and always
+   * materializes `mcp.json`.
+   */
+  readonly piMcpConfigFile?: string;
 }
