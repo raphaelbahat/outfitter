@@ -16,3 +16,12 @@
 - Pi is the primary and most complete adapter. Claude Code and Codex CLI adapters ship as well (OFTR-006) and are supported with gaps; Codex currently projects only model and MCP servers. Unsupported controls must warn rather than fail unless `--strict` is set.
 - When adding files or changing directory layout, first check `docs/architecture/file_structure.md` for the current structure and update the relevant documentation afterward.
 - When adding tests that validate formal requirements, include the required two-line traceability comment immediately before the relevant `it(...)` or `describe(...)` block.
+
+## Fork-only divergences
+
+This checkout is the maintained fork (`raphaelbahat/outfitter`). Deliberate
+fork-only behavior changes are recorded in
+[`docs/fork-divergences.md`](docs/fork-divergences.md) — consult it before
+assuming upstream behavior, record any new divergence there, and re-evaluate
+each one once upstream covers the need. Fork-only work is never opened as an
+upstream issue or PR.
